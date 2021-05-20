@@ -27,6 +27,7 @@ namespace ModelBookAPITests
             var newUser = AuthRequest.NewUserRequest(user);
 
             var changedEmail = ClientRequest.ChangeEmailRequest("Qweqwe123#", expectedEmail, newUser.TokenData.Token);
+
             Assert.AreEqual(expectedEmail, changedEmail);
         }
 
@@ -41,16 +42,15 @@ namespace ModelBookAPITests
                 { "password", "Qweqwe123#" },
                 { "phone_number", "5554445555" }
             };
-            
+
             var newUser = AuthRequest.NewUserRequest(user);
-            
-            
+
             var changedPassword = ClientRequest.ChangePassword(
                     "Qweqwe123#", "Qweqwe123@", newUser.TokenData.Token);
 
             Assert.AreEqual(HttpStatusCode.OK, changedPassword);
         }
-        
+
         [Test]
         public void ChangePhone()
         {
@@ -62,13 +62,13 @@ namespace ModelBookAPITests
                 { "password", "Qweqwe123#" },
                 { "phone_number", "5554445555" }
             };
-            
+
             var newUser = AuthRequest.NewUserRequest(user);
 
-            var changedPassword = ClientRequest.ChangePhoneNumber(
+            var changedPhone = ClientRequest.ChangePhoneNumber(
                 "Qweqwe123#", "4444444444", newUser.TokenData.Token);
 
-            Assert.AreEqual(HttpStatusCode.OK, changedPassword);
+            Assert.AreEqual("4444444444", changedPhone);
         }
     }
 }

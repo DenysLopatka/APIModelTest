@@ -48,26 +48,47 @@ namespace ModelBookAPITests
 
             return response.StatusCode;
         }
-        
+
         public static string ChangePhoneNumber(string password, string newNumber, string token)
-                {
-                    var client = new RestClient("https://api.newbookmodels.com/api/v1/client/change_phone/");
-                    var request = new RestRequest(Method.POST);
-                    var newPhone = new Dictionary<string, string>
+        {
+            var client = new RestClient("https://api.newbookmodels.com/api/v1/client/change_phone/");
+            var request = new RestRequest(Method.POST);
+            var newPhoneModel = new Dictionary<string, string>
                     {
                         {"password",password},
                         {"phone_number",newNumber}
                     };
-        
-                    request.AddHeader("content-type", "application/json");
-                    request.AddHeader("authorization", token);
-                    request.AddJsonBody(newPhone);
-                    request.RequestFormat = DataFormat.Json;
-        
-                    var response = client.Execute(request);
-                    var changePasswordResponse = JsonConvert.DeserializeObject<ChangePhoneNumberResponse>(response.Content);
-        
-                    return changePasswordResponse.PhoneNumber;
-                }
+
+            request.AddHeader("content-type", "application/json");
+            request.AddHeader("authorization", token);
+            request.AddJsonBody(newPhoneModel);
+            request.RequestFormat = DataFormat.Json;
+
+            var response = client.Execute(request);
+            var changePhoneResponse = JsonConvert.DeserializeObject<ChangePhoneNumberResponse>(response.Content);
+
+            return changePhoneResponse.PhoneNumber;
+        }
+
+        public static string ChangeNameAndLastName(string firstName, string lastName, string token)
+        {
+            var client = new RestClient("https://api.newbookmodels.com/api/v1/client/self/");
+            var request = new RestRequest(Method.PATCH);
+            var newNamesModel = new Dictionary<string, string>
+            {
+                { "first_name", firstName},
+                { "last_name", lastName},
+            };
+
+            request.AddHeader("content-type", "application/json");
+            request.AddHeader("authorization", token);
+            request.AddJsonBody(newNamesModel);
+            request.RequestFormat = DataFormat.Json;
+
+            var response = client.Execute(request);
+            var changeNamesResponse = JsonConvert.DeserializeObject<ChangeSelfResponse>(response.Content);
+
+            return changeNamesResponse.
+        }
     }
 }
