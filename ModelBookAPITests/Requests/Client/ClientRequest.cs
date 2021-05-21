@@ -23,7 +23,7 @@ namespace ModelBookAPITests
             request.RequestFormat = DataFormat.Json;
 
             var response = client.Execute(request);
-            var changeEmailResponse = JsonConvert.DeserializeObject<ChangeEmailResponse>(response.Content);
+            var changeEmailResponse = JsonConvert.DeserializeObject<Responses>(response.Content);
 
             return changeEmailResponse.Email;
         }
@@ -70,25 +70,89 @@ namespace ModelBookAPITests
             return changePhoneResponse.PhoneNumber;
         }
 
-        public static string ChangeNameAndLastName(string firstName, string lastName, string token)
+        public static string ChangeName(string firstName, string token)
         {
             var client = new RestClient("https://api.newbookmodels.com/api/v1/client/self/");
             var request = new RestRequest(Method.PATCH);
-            var newNamesModel = new Dictionary<string, string>
+            var newNameModel = new Dictionary<string, string>
             {
                 { "first_name", firstName},
+            };
+
+            request.AddHeader("content-type", "application/json");
+            request.AddHeader("authorization", token);
+            request.AddJsonBody(newNameModel);
+            request.RequestFormat = DataFormat.Json;
+
+            var response = client.Execute(request);
+            var changeNameResponse = JsonConvert.DeserializeObject<ChangeSelfResponse>(response.Content);
+
+            return changeNameResponse.FirstName;
+        }
+
+        public static string ChangeLastName(string lastName, string token)
+        {
+            var client = new RestClient("https://api.newbookmodels.com/api/v1/client/self/");
+            var request = new RestRequest(Method.PATCH);
+            var newLastNameModel = new Dictionary<string, string>
+            {
                 { "last_name", lastName},
             };
 
             request.AddHeader("content-type", "application/json");
             request.AddHeader("authorization", token);
-            request.AddJsonBody(newNamesModel);
+            request.AddJsonBody(newLastNameModel);
             request.RequestFormat = DataFormat.Json;
 
             var response = client.Execute(request);
-            var changeNamesResponse = JsonConvert.DeserializeObject<ChangeSelfResponse>(response.Content);
+            var changeLastNameResponse = JsonConvert.DeserializeObject<ChangeSelfResponse>(response.Content);
 
-            return changeNamesResponse.
+            return changeLastNameResponse.LastName;
+        }
+
+        public static string ChangeCompanyLocation(string locationCode, string locationCity, string locationLatitude, string locationLongitude, string locationName, string locationTime, string token)
+        {
+            var client = new RestClient("https://api.newbookmodels.com/api/v1/client/profile/");
+            var request = new RestRequest(Method.PATCH);
+            var newCompanyLocationsModel = new Dictionary<string, string>
+            {                         
+                {"location_admin1_code", locationCode},
+                {"location_city_name", locationCity},
+                {"location_latitude", locationLatitude},
+                {"location_longitude", locationLongitude},
+                {"location_name", locationName},
+                {"location_timezone", locationTime},
+        };
+
+            request.AddHeader("content-type", "application/json");
+            request.AddHeader("authorization", token);
+            request.AddJsonBody(newCompanyLocationsModel);
+            request.RequestFormat = DataFormat.Json;
+
+            var response = client.Execute(request);
+            var changeCompanyLocationResponse = JsonConvert.DeserializeObject<ChangeGeneralInformation>(response.Content);
+
+            return changeCompanyLocationResponse.CompanyAddress;
+        }
+
+        public static string ChangeIndustry(string industry, string token)
+        {
+            var client = new RestClient("https://api.newbookmodels.com/api/v1/client/self/");
+            var request = new RestRequest(Method.PATCH);
+            var newIndustryModel = new Dictionary<string, string>
+            {
+                { "industry", industry},
+            };
+
+            request.AddHeader("content-type", "application/json");
+            request.AddHeader("authorization", token);
+            request.AddJsonBody(newIndustryModel);
+            request.RequestFormat = DataFormat.Json;
+
+            var response = client.Execute(request);
+            var changeIndustryResponse = JsonConvert.DeserializeObject<ChangeGeneralInformation>(response.Content);
+
+            return changeIndustryResponse.Industry;
         }
     }
 }

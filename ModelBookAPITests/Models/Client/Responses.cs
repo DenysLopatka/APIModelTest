@@ -2,7 +2,7 @@
 
 namespace ModelBookAPITests
 {
-    public class ChangeEmailResponse
+    public class Responses
     {
         public string Email { get; set; }
     }
